@@ -12,7 +12,7 @@ usuarios, parcelas, reservas, pagos y difuntos.
 ## 2. Instalación
 
 ```bash
-git clone <repostorio>
+git clone <url-del-repo>
 cd cementerio_api
 python -m venv .venv
 source .venv/bin/activate
