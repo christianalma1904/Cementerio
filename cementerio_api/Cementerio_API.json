@@ -1,0 +1,706 @@
+
+{
+  "info": {
+    "_postman_id": "c1c1c1c1-0000-0000-0000-cementerio",
+    "name": "Cementerio API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Obtener Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"tu_password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set(\"token\", jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar Usuarios",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/usuarios/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Christian\",\n  \"apellido\": \"Alcocer\",\n  \"email\": \"christian@example.com\",\n  \"telefono\": \"0999999999\",\n  \"tipo_usuario\": \"CLIENTE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/usuarios/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Usuario (id)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/usuarios/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Usuario (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_usuario\": 1,\n  \"nombre\": \"Christian Actualizado\",\n  \"apellido\": \"Alcocer\",\n  \"email\": \"christian.actualizado@example.com\",\n  \"telefono\": \"0988888888\",\n  \"tipo_usuario\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/usuarios/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/usuarios/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "usuarios",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Parcelas",
+      "item": [
+        {
+          "name": "Listar Parcelas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/parcelas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parcelas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Parcela",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ubicacion\": \"Sector A - Fila 1\",\n  \"tamanio\": \"2x1m\",\n  \"estado\": \"DISPONIBLE\",\n  \"precio\": \"500.00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/parcelas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parcelas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Parcela (id)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/parcelas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parcelas",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Parcela (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_parcela\": 1,\n  \"ubicacion\": \"Sector A - Fila 1\",\n  \"tamanio\": \"2x2m\",\n  \"estado\": \"RESERVADA\",\n  \"precio\": \"600.00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/parcelas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parcelas",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Parcela",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/parcelas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "parcelas",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reservas",
+      "item": [
+        {
+          "name": "Listar Reservas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reservas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": 1,\n  \"fecha_reserva\": \"2025-11-24\",\n  \"estado\": \"PENDIENTE\",\n  \"parcela\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Reserva (id)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/reservas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservas",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Reserva (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_reserva\": 1,\n  \"usuario\": 1,\n  \"fecha_reserva\": \"2025-11-24\",\n  \"estado\": \"CONFIRMADA\",\n  \"parcela\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reservas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservas",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Reserva",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reservas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reservas",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pagos",
+      "item": [
+        {
+          "name": "Listar Pagos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/pagos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Pago",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reserva\": 1,\n  \"monto\": \"300.00\",\n  \"fecha_pago\": \"2025-11-24\",\n  \"metodo_pago\": \"EFECTIVO\",\n  \"estado_pago\": \"PAGADO\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pagos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Pago (id)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/pagos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagos",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Pago (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_pago\": 1,\n  \"reserva\": 1,\n  \"monto\": \"300.00\",\n  \"fecha_pago\": \"2025-11-24\",\n  \"metodo_pago\": \"TARJETA\",\n  \"estado_pago\": \"PAGADO\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pagos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagos",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Pago",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pagos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pagos",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Difuntos",
+      "item": [
+        {
+          "name": "Listar Difuntos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/difuntos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "difuntos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Difunto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"María\",\n  \"apellido\": \"Pérez\",\n  \"fecha_nacimiento\": \"1950-05-10\",\n  \"parcela\": 1,\n  \"fecha_fallecimiento\": \"2020-08-15\",\n  \"notas\": \"Siempre en nuestra memoria\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/difuntos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "difuntos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Difunto (id)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/difuntos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "difuntos",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Difunto (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_difunto\": 1,\n  \"nombre\": \"María Actualizada\",\n  \"apellido\": \"Pérez\",\n  \"fecha_nacimiento\": \"1950-05-10\",\n  \"parcela\": 1,\n  \"fecha_fallecimiento\": \"2020-08-15\",\n  \"notas\": \"Actualizado en sistema\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/difuntos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "difuntos",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Difunto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/difuntos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "difuntos",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
