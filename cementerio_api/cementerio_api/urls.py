@@ -1,13 +1,25 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.routers import DefaultRouter
+
+from cementerio.views import (
+    UsuarioViewSet,
+    ParcelaViewSet,
+    ReservaViewSet,
+    PagoViewSet,
+    DifuntoViewSet,
+    CustomAuthToken,
+)
+
+router = DefaultRouter()
+router.register(r"usuarios", UsuarioViewSet, basename="usuario")
+router.register(r"parcelas", ParcelaViewSet, basename="parcela")
+router.register(r"reservas", ReservaViewSet, basename="reserva")
+router.register(r"pagos", PagoViewSet, basename="pago")
+router.register(r"difuntos", DifuntoViewSet, basename="difunto")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    # login: devuelve token
-    path("api/token-login/", obtain_auth_token, name="api_token_auth"),
-
-    # API principal
-    path("api/", include("core.urls")),
+    path("api/", include(router.urls)),
+    path("api/auth/login/", CustomAuthToken.as_view(), name="api_login"),
 ]

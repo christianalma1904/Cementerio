@@ -7,7 +7,6 @@ def custom_exception_handler(exc, context):
     response = exception_handler(exc, context)
 
     if response is not None:
-        # Errores 400 / 404 controlados por DRF
         return Response(
             {
                 "detail": response.data,
@@ -16,10 +15,9 @@ def custom_exception_handler(exc, context):
             status=response.status_code,
         )
 
-    # Errores 500 u otros no controlados
     return Response(
         {
-            "detail": "Error interno del servidor. Contacte al administrador.",
+            "detail": "Error interno del servidor. Contacte con el administrador.",
             "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR,
         },
         status=status.HTTP_500_INTERNAL_SERVER_ERROR,
