@@ -84,6 +84,7 @@ jobs:
           echo '1. Actualizando código...'
           cd /home/christian/cementerio_api/Cementerio
           git config --global --add safe.directory /home/christian/cementerio_api/Cementerio
+          git fetch origin
           git reset --hard origin/main
 
           echo '2. Activando entorno virtual...'
