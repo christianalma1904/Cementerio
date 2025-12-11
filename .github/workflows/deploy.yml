@@ -78,18 +78,17 @@ jobs:
         PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         VENV_PATH: ${{ secrets.VENV_PATH }}
       run: |
-        ssh -tt $VPS_USER@$VPS_HOST << EOF
+        ssh -tt $VPS_USER@$VPS_HOST << 'EOF'
           set -e
 
           echo '1. Actualizando código...'
-          cd "$PROJECT_PATH"
-          REPO_PATH=\$(pwd)
-          git config --global --add safe.directory "\$REPO_PATH"
+          cd /home/christian/cementerio_api/Cementerio
+          git config --global --add safe.directory /home/christian/cementerio_api/Cementerio
           git fetch origin
           git reset --hard origin/main
 
           echo '2. Activando entorno virtual...'
-          source "$VENV_PATH/bin/activate"
+          source /home/christian/cementerio_api/venv/bin/activate
 
           echo '3. Instalando dependencias...'
           pip install -r requirements.txt
