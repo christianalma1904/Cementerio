@@ -70,7 +70,11 @@ jobs:
        
         # Añadir el host a known_hosts
         ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
-   
+
+    - name: Test SSH connection to VPS
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "echo '✅ Conexión SSH exitosa desde GitHub Actions'"
+
     - name: Deploy to VPS
       env:
         VPS_HOST: ${{ secrets.VPS_HOST }}
