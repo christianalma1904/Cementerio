@@ -51,7 +51,7 @@ jobs:
         DB_HOST: localhost
         DB_PORT: 5432
       run: |
-        python manage.py test --verbosity=2
+        python cementerio_api/manage.py test --verbosity=2
 
 
   deploy:
