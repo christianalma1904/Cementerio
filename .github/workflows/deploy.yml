@@ -79,7 +79,7 @@ jobs:
         PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         VENV_PATH: ${{ secrets.VENV_PATH }}
       run: |
-        ssh $VPS_USER@$VPS_HOST << EOF
+        ssh -tt $VPS_USER@$VPS_HOST << EOF
           set -e
 
           echo '1. Actualizando código...'
