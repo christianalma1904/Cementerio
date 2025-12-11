@@ -75,7 +75,6 @@ jobs:
       env:
         VPS_HOST: ${{ secrets.VPS_HOST }}
         VPS_USER: ${{ secrets.VPS_USERNAME }}
-        DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
         PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         VENV_PATH: ${{ secrets.VENV_PATH }}
       run: |
@@ -84,7 +83,8 @@ jobs:
 
           echo '1. Actualizando código...'
           cd "$PROJECT_PATH"
-          git config --global --add safe.directory "$PROJECT_PATH"
+          REPO_PATH=\$(pwd)
+          git config --global --add safe.directory "\$REPO_PATH"
           git fetch origin
           git reset --hard origin/main
 
