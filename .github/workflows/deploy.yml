@@ -96,7 +96,9 @@ jobs:
 
           echo '3. Instalando dependencias...'
           cd cementerio_api
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --no-cache-dir
+
 
           echo '4. Aplicando migraciones...'
           python manage.py migrate --noinput
@@ -105,8 +107,8 @@ jobs:
           python manage.py collectstatic --noinput --clear
 
           echo '6. Reiniciando servicios...'
-          sudo systemctl restart gunicorn || true
-          sudo systemctl restart nginx || true
+          sudo -n systemctl restart gunicorn || true
+          sudo -n  systemctl restart nginx || true
 
           echo '✅ Despliegue completado'
         EOF
