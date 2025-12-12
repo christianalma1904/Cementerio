@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8bkj#!kuql7!(np2*f8)4p_l*lt^-s1=35t0^v8i!f9#8ub64i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['20.169.25.93', '/run/gunicorn.sock', 'localhost', '127.0.0.1','cementerio-api.desarrollo-software.xyz']
+ALLOWED_HOSTS = ['20.169.25.93', '/run/gunicorn.sock', 'localhost', '127.0.0.1']
 
 
 # Application definition
