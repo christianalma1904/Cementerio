@@ -95,6 +95,7 @@ jobs:
           source /home/christian/cementerio_api/venv/bin/activate
 
           echo '3. Instalando dependencias...'
+          cd cementerio_api
           pip install -r requirements.txt
 
           echo '4. Aplicando migraciones...'
