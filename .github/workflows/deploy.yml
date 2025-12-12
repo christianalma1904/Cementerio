@@ -108,4 +108,4 @@ jobs:
           sudo systemctl restart nginx || true
 
           echo '✅ Despliegue completado'
-        EOFa
+        EOF
