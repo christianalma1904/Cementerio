@@ -81,34 +81,33 @@ jobs:
         VPS_USER: ${{ secrets.VPS_USERNAME }}
         PROJECT_PATH: ${{ secrets.PROJECT_PATH }}
         VENV_PATH: ${{ secrets.VENV_PATH }}
-      run: |
-        ssh -tt $VPS_USER@$VPS_HOST << 'EOF'
-          set -e
+            run: |
+            ssh -tt $VPS_USER@$VPS_HOST << 'EOF'
+            set -e
 
-          echo '1. Actualizando código...'
-          cd /home/christian/cementerio_api/Cementerio
-          git config --global --add safe.directory /home/christian/cementerio_api/Cementerio
-          git fetch origin
-          git reset --hard origin/main
+            echo '1. Actualizando código...'
+            cd /home/christian/cementerio_api/Cementerio
+            git config --global --add safe.directory /home/christian/cementerio_api/Cementerio
+            git fetch origin
+            git reset --hard origin/main
 
-          echo '2. Activando entorno virtual...'
-          source /home/christian/cementerio_api/venv/bin/activate
+            echo '2. Activando entorno virtual...'
+            source /home/christian/cementerio_api/venv/bin/activate
 
-          echo '3. Instalando dependencias...'
-          cd cementerio_api
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt --no-cache-dir
+            echo '3. Instalando dependencias...'
+            cd cementerio_api
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt --no-cache-dir
 
+            echo '4. Aplicando migraciones...'
+            python manage.py migrate --noinput
 
-          echo '4. Aplicando migraciones...'
-          python manage.py migrate --noinput
+            echo '5. Colectando archivos estáticos...'
+            python manage.py collectstatic --noinput --clear
 
-          echo '5. Colectando archivos estáticos...'
-          python manage.py collectstatic --noinput --clear
+            echo '6. Reiniciando servicios...'
+            sudo -n systemctl restart gunicorn || true
+            sudo -n systemctl restart nginx || true
 
-          echo '6. Reiniciando servicios...'
-          sudo -n systemctl restart gunicorn || true
-          sudo -n  systemctl restart nginx || true
-
-          echo '✅ Despliegue completado'
-        EOF
+            echo '✅ Despliegue completado'
+            EOF
