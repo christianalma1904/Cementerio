@@ -83,21 +83,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
+    - name: Azure Login
+      uses: azure/login@v1
       with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Log in to Azure Container Registry
+      run: |
+        az acr login --name cementerioacr
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/cementerio-api:${{ github.sha }} .
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/cementerio-api:latest .
+        docker build -t cementerioacr.azurecr.io/cementerio-api:${{ github.sha }} .
+        docker build -t cementerioacr.azurecr.io/cementerio-api:latest .
 
-    - name: Push Docker image
+    - name: Push Docker image to ACR
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/cementerio-api:${{ github.sha }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/cementerio-api:latest
+        docker push cementerioacr.azurecr.io/cementerio-api:${{ github.sha }}
+        docker push cementerioacr.azurecr.io/cementerio-api:latest
 
   deploy:
     needs: build
@@ -113,24 +116,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy to Azure Container Instances
+    - name: Deploy to Azure Web App
       run: |
-        az container create \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+        az webapp deployment container config \
           --name cementerio-api \
-          --image ${{ secrets.DOCKER_USERNAME }}/cementerio-api:latest \
-          --cpu 1 --memory 1 \
-          --environment-variables \
-            DEBUG=False \
-            ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} \
-          --secure-environment-variables \
-            SECRET_KEY=${{ secrets.SECRET_KEY }} \
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-          --ports 8000 \
-          --protocol TCP \
-          --dns-name-label cementerio-api \
-          --restart-policy OnFailure
+          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --docker-custom-image-name cementerioacr.azurecr.io/cementerio-api:latest \
+          --docker-registry-server-url https://cementerioacr.azurecr.io \
+          --docker-registry-server-user $(az acr credential show --name cementerioacr --query username -o tsv) \
+          --docker-registry-server-password $(az acr credential show --name cementerioacr --query passwords[0].value -o tsv)
 
     - name: Verify deployment
       run: |
-        echo "Deployment completed. API URL: http://cementerio-api.${{ secrets.AZURE_REGION }}.azurecontainer.io:8000"
+        echo "Deployment completed. API URL: https://cementerio-api.azurewebsites.net"
