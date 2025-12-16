@@ -10,21 +10,21 @@ Type=notify
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/cementerio_api
+Environment="PATH=/var/www/cementerio_api/venv/bin"
 
-# Environment variables
-EnvironmentFile=/var/www/cementerio_api/.env
-
-# Execute
+# Gunicorn configuration
 ExecStart=/var/www/cementerio_api/venv/bin/gunicorn \
-    --workers=4 \
-    --worker-class=sync \
-    --bind=127.0.0.1:8000 \
-    --timeout=120 \
-    --access-logfile=/var/log/cementerio_api/access.log \
-    --error-logfile=/var/log/cementerio_api/error.log \
+    --workers 4 \
+    --worker-class sync \
+    --bind 127.0.0.1:8000 \
+    --timeout 120 \
+    --access-logfile /var/log/cementerio_api/access.log \
+    --error-logfile /var/log/cementerio_api/error.log \
     cementerio_api.wsgi:application
 
 ExecReload=/bin/kill -s HUP $MAINPID
+Restart=on-failure
+RestartSec=5
 KillMode=mixed
 KillSignal=SIGTERM
 

@@ -1,4 +1,4 @@
-name: Django CI/CD Pipeline
+name: Django CI Pipeline
 
 on:
   push:
@@ -48,59 +48,3 @@ jobs:
         files: ./cementerio_api/coverage.xml
         flags: unittests
         name: codecov-umbrella
-
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Log in to Azure Container Registry
-      run: |
-        az acr login --name cementerioacr
-
-    - name: Build Docker image
-      run: |
-        docker build -t cementerioacr.azurecr.io/cementerio-api:${{ github.sha }} .
-        docker build -t cementerioacr.azurecr.io/cementerio-api:latest .
-
-    - name: Push Docker image to ACR
-      run: |
-        docker push cementerioacr.azurecr.io/cementerio-api:${{ github.sha }}
-        docker push cementerioacr.azurecr.io/cementerio-api:latest
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Deploy to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Deploy to Azure Web App
-      run: |
-        az webapp deployment container config \
-          --name cementerio-api \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-          --docker-custom-image-name cementerioacr.azurecr.io/cementerio-api:latest \
-          --docker-registry-server-url https://cementerioacr.azurecr.io \
-          --docker-registry-server-user $(az acr credential show --name cementerioacr --query username -o tsv) \
-          --docker-registry-server-password $(az acr credential show --name cementerioacr --query passwords[0].value -o tsv)
-
-    - name: Verify deployment
-      run: |
-        echo "Deployment completed. API URL: https://cementerio-api.azurewebsites.net"

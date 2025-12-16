@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Deploy script mejorado para Cementerio API
+# Deploy script simple para Cementerio API en VPS
 # Ejecutar con: ./deploy.sh
 
 set -e
 
 echo "========================================="
-echo "🚀 Cementerio API - Deploy Script"
+echo "🚀 Cementerio API - Deploy en VPS"
 echo "========================================="
 
 # Colores
@@ -19,7 +19,7 @@ NC='\033[0m' # No Color
 PROJECT_DIR="/home/$(whoami)/cementerio_api"
 VENV_DIR="$PROJECT_DIR/venv"
 
-echo -e "${YELLOW}1. Actualizando código...${NC}"
+echo -e "${YELLOW}1. Actualizando código desde GitHub...${NC}"
 cd $PROJECT_DIR
 git fetch origin
 git pull origin main
@@ -30,65 +30,31 @@ source $VENV_DIR/bin/activate
 echo -e "${YELLOW}3. Instalando dependencias...${NC}"
 pip install -q -r requirements.txt
 
-# Verificar si .env existe y tiene configuración correcta
-if [ ! -f "$PROJECT_DIR/.env" ]; then
-    echo -e "${RED}❌ ARCHIVO .env NO ENCONTRADO${NC}"
-    echo -e "${YELLOW}Crea un archivo .env en: $PROJECT_DIR/.env${NC}"
-    echo ""
-    echo "Ejemplo de contenido:"
-    cat << EOF
-DEBUG=False
-SECRET_KEY=tu-clave-secreta-aqui
-ALLOWED_HOSTS=tu-dominio.com,localhost
-
-# Database
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=cementerio_db
-DB_USER=billing_user
-DB_PASSWORD=tu-contraseña-aqui
-DB_HOST=localhost
-DB_PORT=5432
-
-# Static files
-STATIC_URL=/static/
-STATIC_ROOT=/var/www/cementerio_api/static/
-EOF
-    echo ""
-    exit 1
-fi
-
-echo -e "${YELLOW}4. Cargando variables de entorno...${NC}"
-source $PROJECT_DIR/.env
-
-echo -e "${YELLOW}5. Recolectando archivos estáticos...${NC}"
-cd $PROJECT_DIR
+echo -e "${YELLOW}4. Recolectando archivos estáticos...${NC}"
 python manage.py collectstatic --noinput --clear
 
-echo -e "${YELLOW}6. Aplicando migraciones...${NC}"
-python manage.py migrate || {
-    echo -e "${RED}⚠️  Las migraciones fallaron${NC}"
-    echo -e "${YELLOW}Verifica que las credenciales de base de datos en .env sean correctas:${NC}"
-    echo "  - DB_USER: $DB_USER"
-    echo "  - DB_HOST: $DB_HOST"
-    echo "  - DB_NAME: $DB_NAME"
-    exit 1
-}
+echo -e "${YELLOW}5. Aplicando migraciones...${NC}"
+python manage.py migrate
 
-echo -e "${YELLOW}7. Reiniciando aplicación...${NC}"
+echo -e "${YELLOW}6. Reiniciando aplicación...${NC}"
 # Reiniciar gunicorn si está usando systemd
-sudo systemctl restart cementerio-api || {
-    echo -e "${YELLOW}Nota: systemd service no está activo (es normal en desarrollo)${NC}"
-}
+if systemctl is-active --quiet cementerio-api; then
+    sudo systemctl restart cementerio-api
+    echo -e "${GREEN}✅ Systemd service reiniciado${NC}"
+else
+    echo -e "${YELLOW}⚠️  Systemd service no está activo${NC}"
+    echo "Para usar systemd, copia cementerio-api.service a /etc/systemd/system/"
+fi
 
 echo ""
 echo -e "${GREEN}✅ ¡Deploy completado!${NC}"
 echo ""
 echo "Próximos pasos:"
 echo "  1. Verificar que la aplicación está corriendo:"
-echo "     curl http://localhost:8000"
+echo "     curl http://localhost:8000/admin/"
 echo ""
-echo "  2. Si usas Nginx:"
+echo "  2. Si usas Nginx, reinicia:"
 echo "     sudo systemctl restart nginx"
 echo ""
-echo "  3. Ver logs:"
-echo "     sudo journalctl -u cementerio-api -f"
+echo "  3. Ver logs del servidor:"
+echo "     tail -f /var/log/cementerio_api/error.log"
