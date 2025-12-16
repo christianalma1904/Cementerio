@@ -1,8 +1,8 @@
 # 🚀 Quick Start - Cementerio API
 
-## Lo Que Tenés
+## Lo Que Tenemos
 
-Tu **Cementerio API** completa con:
+El **Cementerio API** completa con:
 
 ✅ Backend Django profesional  
 ✅ API REST lista para usar  
@@ -122,9 +122,9 @@ https://github.com/tu-usuario/cementerio_api
 
 ## Próximo Paso
 
-1. Si querés testear: elige Opción A o B arriba
-2. Si querés producción: lee SETUP.md
-3. Si tenés dudas: revisa DEPLOYMENT.md o SUMMARY.md
+1. Si quieres testear: elige Opción A o B arriba
+2. Si quieres producción: lee SETUP.md
+3. Si tienes dudas: revisa DEPLOYMENT.md o SUMMARY.md
 
 ---
 
