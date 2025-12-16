@@ -174,4 +174,4 @@ MIT
 
 ## Autor
 
-Alcocer Christian - Desarrollo inicial
+Alcocer Marroquin Christian Daniel - Desarrollo inicial
