@@ -1,0 +1,40 @@
+# Systemd Service File for Cementerio API
+# Ubicación: /etc/systemd/system/cementerio-api.service
+
+[Unit]
+Description=Cementerio API Django Application
+After=network.target postgresql.service
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/cementerio_api
+
+# Environment variables
+EnvironmentFile=/var/www/cementerio_api/.env
+
+# Execute
+ExecStart=/var/www/cementerio_api/venv/bin/gunicorn \
+    --workers=4 \
+    --worker-class=sync \
+    --bind=127.0.0.1:8000 \
+    --timeout=120 \
+    --access-logfile=/var/log/cementerio_api/access.log \
+    --error-logfile=/var/log/cementerio_api/error.log \
+    cementerio_api.wsgi:application
+
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+KillSignal=SIGTERM
+
+# Restart policy
+Restart=on-failure
+RestartSec=10
+
+# Resource limits
+LimitNOFILE=65535
+LimitNPROC=65535
+
+[Install]
+WantedBy=multi-user.target
