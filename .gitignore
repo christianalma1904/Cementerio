@@ -96,7 +96,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -140,7 +139,3 @@ Thumbs.db
 # SQLite databases (local development only)
 *.sqlite
 *.sqlite3
-
-# Environment configuration files
-.env.local
-.env.*.local

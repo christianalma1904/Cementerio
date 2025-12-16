@@ -41,22 +41,18 @@ jobs:
         pip install -r cementerio_api/requirements.txt
         pip install coverage pytest pytest-django
 
-    - name: Create .env file for testing
-      run: |
-        cat > cementerio_api/.env << EOF
-        DEBUG=False
-        SECRET_KEY=test-secret-key-for-ci
-        ALLOWED_HOSTS=localhost,127.0.0.1,testserver
-        DB_ENGINE=django.db.backends.postgresql
-        DB_NAME=cementerio_test
-        DB_USER=test_user
-        DB_PASSWORD=test_password
-        DB_HOST=localhost
-        DB_PORT=5432
-        EOF
-
     - name: Run migrations
       working-directory: ./cementerio_api
+      env:
+        DB_ENGINE: django.db.backends.postgresql
+        DB_NAME: cementerio_test
+        DB_USER: test_user
+        DB_PASSWORD: test_password
+        DB_HOST: localhost
+        DB_PORT: "5432"
+        DEBUG: "False"
+        SECRET_KEY: test-secret-key-for-ci
+        ALLOWED_HOSTS: localhost,127.0.0.1,testserver
       run: |
         python manage.py migrate
 
