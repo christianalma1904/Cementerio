@@ -9,21 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_DB: cementerio_test
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_password
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
     - name: Checkout code
@@ -44,20 +29,14 @@ jobs:
     - name: Run migrations
       working-directory: ./cementerio_api
       env:
-        DB_ENGINE: django.db.backends.postgresql
-        DB_NAME: cementerio_test
-        DB_USER: test_user
-        DB_PASSWORD: test_password
-        DB_HOST: localhost
-        DB_PORT: "5432"
-        DEBUG: "False"
-        SECRET_KEY: test-secret-key-for-ci
-        ALLOWED_HOSTS: localhost,127.0.0.1,testserver
+        CI: "true"
       run: |
         python manage.py migrate
 
     - name: Run tests with coverage
       working-directory: ./cementerio_api
+      env:
+        CI: "true"
       run: |
         coverage run --source='.' manage.py test
         coverage report

@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Detectar si está en GitHub Actions (CI/CD)
+IS_CI = os.getenv('CI', 'false').lower() == 'true'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -76,16 +78,26 @@ WSGI_APPLICATION = 'cementerio_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "cementerio_db",
-        "USER": "postgres",
-        "PASSWORD": "Abc123",
-        "HOST": "localhost",
-        "PORT": "5432",
+if IS_CI:
+    # Use SQLite for CI/CD (GitHub Actions)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db_test.sqlite3",
+        }
     }
-}
+else:
+    # Use PostgreSQL in production/local development
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "cementerio_db",
+            "USER": "postgres",
+            "PASSWORD": "Abc123",
+            "HOST": "localhost",
+            "PORT": "5432",
+        }
+    }
 
 REST_FRAMEWORK = {
     # "DEFAULT_AUTHENTICATION_CLASSES": [
