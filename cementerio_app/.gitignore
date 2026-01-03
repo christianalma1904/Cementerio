@@ -1,0 +1,47 @@
+# Flutter
+.packages
+.dart_tool/
+build/
+flutter_export_environment.sh
+*.apk
+*.ipa
+*.app
+*.aar
+*.dill
+.android/
+.ios/
+.macos/
+.windows/
+.web/
+
+# Dependencies
+pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Coverage
+coverage/
+.coverage
+
+# Generated
+*.g.dart
+*.config.dart
