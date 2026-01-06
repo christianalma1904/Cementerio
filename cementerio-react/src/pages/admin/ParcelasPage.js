@@ -10,7 +10,7 @@ import {
   Grid,
   CircularProgress,
 } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Add as AddIcon, GridOn as GridIcon } from '@mui/icons-material';
 import DataTable from '../../components/common/DataTable';
 import FormDialog from '../../components/common/FormDialog';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
@@ -126,34 +126,65 @@ const ParcelasPage = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress sx={{ color: '#0d9488' }} />
       </Box>
     );
   }
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Typography variant="h4" fontWeight="bold">
-            Parcelas
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Gestión de parcelas del cementerio
-          </Typography>
+    <Box className="animate-fade-in">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <GridIcon />
+          </Box>
+          <Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Parcelas
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Gestión de parcelas del cementerio
+            </Typography>
+          </Box>
         </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          sx={{ bgcolor: '#1a472a', '&:hover': { bgcolor: '#2d5a3f' } }}
+          sx={{ 
+            background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+            boxShadow: '0 4px 14px rgba(13, 148, 136, 0.35)',
+            '&:hover': { 
+              background: 'linear-gradient(135deg, #0f766e 0%, #0d9488 100%)',
+            },
+          }}
         >
           Nueva Parcela
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
       <DataTable
         columns={columns}
@@ -171,7 +202,7 @@ const ParcelasPage = () => {
         loading={saving}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               label="Ubicación"
@@ -182,7 +213,7 @@ const ParcelasPage = () => {
               placeholder="Ej: Sector A - Fila 3 - Número 15"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Tamaño"
@@ -193,7 +224,7 @@ const ParcelasPage = () => {
               placeholder="Ej: 2m x 1m"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               select
@@ -208,7 +239,7 @@ const ParcelasPage = () => {
               <MenuItem value="OCUPADA">Ocupada</MenuItem>
             </TextField>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               label="Precio"
@@ -230,6 +261,8 @@ const ParcelasPage = () => {
         onConfirm={handleDelete}
         title="Eliminar Parcela"
         message={`¿Está seguro de eliminar la parcela "${selectedParcela?.ubicacion}"?`}
+        severity="danger"
+        confirmText="Eliminar"
       />
 
       {/* Snackbar */}
@@ -239,7 +272,11 @@ const ParcelasPage = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert 
+          severity={snackbar.severity} 
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ borderRadius: 2 }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

@@ -10,7 +10,7 @@ import {
   Grid,
   CircularProgress,
 } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Add as AddIcon, Payment as PaymentIcon } from '@mui/icons-material';
 import DataTable from '../../components/common/DataTable';
 import FormDialog from '../../components/common/FormDialog';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
@@ -140,34 +140,65 @@ const PagosPage = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress sx={{ color: '#8b5cf6' }} />
       </Box>
     );
   }
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Typography variant="h4" fontWeight="bold">
-            Pagos
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Gestión de pagos de reservas
-          </Typography>
+    <Box className="animate-fade-in">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <PaymentIcon />
+          </Box>
+          <Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Pagos
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Gestión de pagos de reservas
+            </Typography>
+          </Box>
         </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          sx={{ bgcolor: '#1a472a', '&:hover': { bgcolor: '#2d5a3f' } }}
+          sx={{ 
+            background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+            boxShadow: '0 4px 14px rgba(139, 92, 246, 0.35)',
+            '&:hover': { 
+              background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+            },
+          }}
         >
           Nuevo Pago
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
       <DataTable
         columns={columns}
@@ -185,7 +216,7 @@ const PagosPage = () => {
         loading={saving}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               select
@@ -202,7 +233,7 @@ const PagosPage = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Monto"
@@ -214,7 +245,7 @@ const PagosPage = () => {
               InputProps={{ inputProps: { min: 0.01, step: 0.01 } }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Fecha de Pago"
@@ -226,7 +257,7 @@ const PagosPage = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               select
@@ -241,7 +272,7 @@ const PagosPage = () => {
               <MenuItem value="TRANSFERENCIA">Transferencia</MenuItem>
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               select
@@ -266,6 +297,8 @@ const PagosPage = () => {
         onConfirm={handleDelete}
         title="Eliminar Pago"
         message={`¿Está seguro de eliminar el pago #${selectedPago?.id_pago}?`}
+        severity="danger"
+        confirmText="Eliminar"
       />
 
       {/* Snackbar */}
@@ -275,7 +308,11 @@ const PagosPage = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert 
+          severity={snackbar.severity} 
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ borderRadius: 2 }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

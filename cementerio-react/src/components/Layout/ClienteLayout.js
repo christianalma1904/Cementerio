@@ -8,7 +8,7 @@ import {
   Typography,
   IconButton,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Divider,
@@ -18,6 +18,8 @@ import {
   useMediaQuery,
   useTheme,
   Tooltip,
+  Chip,
+  alpha,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -28,117 +30,247 @@ import {
   Logout as LogoutIcon,
   Home as HomeIcon,
   ChevronLeft,
+  Settings,
+  Spa,
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 
-const drawerWidth = 260;
+const drawerWidth = 280;
 
 const ClienteLayout = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const menuItems = [
-    { text: 'Mi Panel', path: '/cliente', icon: <DashboardIcon /> },
-    { text: 'Mis Reservas', path: '/cliente/reservas', icon: <EventIcon /> },
-    { text: 'Mis Pagos', path: '/cliente/pagos', icon: <PaymentIcon /> },
-    { text: 'Mi Perfil', path: '/cliente/perfil', icon: <PersonIcon /> },
-  ];
+  const { user, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleMenuClose();
+    logout(true);
+  };
+
+  const menuItems = [
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/cliente' },
+    { text: 'Mis Reservas', icon: <EventIcon />, path: '/cliente/reservas' },
+    { text: 'Mis Pagos', icon: <PaymentIcon />, path: '/cliente/pagos' },
+    { text: 'Mi Perfil', icon: <PersonIcon />, path: '/cliente/perfil' },
+  ];
+
   const drawer = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box 
+      sx={{ 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+        background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
+      }}
+    >
+      {/* Logo Section */}
       <Box
         sx={{
-          p: 2,
+          p: 3,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          bgcolor: '#2196f3',
-          color: 'white',
+          gap: 2,
         }}
       >
-        <Typography variant="h6" noWrap>
-          👤 Mi Cuenta
-        </Typography>
+        <Box
+          sx={{
+            width: 45,
+            height: 45,
+            borderRadius: 2,
+            background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Spa sx={{ color: 'white', fontSize: 24 }} />
+        </Box>
+        <Box>
+          <Typography variant="subtitle1" sx={{ color: 'white', fontWeight: 700 }}>
+            Portal Cliente
+          </Typography>
+          <Typography variant="caption" sx={{ color: '#64748b' }}>
+            Cementerio Municipal
+          </Typography>
+        </Box>
         {isMobile && (
-          <IconButton color="inherit" onClick={handleDrawerToggle}>
+          <IconButton 
+            onClick={handleDrawerToggle}
+            sx={{ ml: 'auto', color: '#64748b' }}
+          >
             <ChevronLeft />
           </IconButton>
         )}
       </Box>
+
+      <Divider sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />
       
-      <List sx={{ flexGrow: 1, pt: 2 }}>
-        {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.path}
-            component={Link}
-            to={item.path}
-            onClick={isMobile ? handleDrawerToggle : undefined}
-            selected={location.pathname === item.path}
-            sx={{
-              mx: 1,
-              borderRadius: 1,
-              mb: 0.5,
-              '&.Mui-selected': {
-                bgcolor: 'rgba(33, 150, 243, 0.12)',
-                '&:hover': {
-                  bgcolor: 'rgba(33, 150, 243, 0.18)',
-                },
-              },
-              '&:hover': {
-                bgcolor: 'rgba(33, 150, 243, 0.08)',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: location.pathname === item.path ? '#2196f3' : 'inherit' }}>
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText
-              primary={item.text}
-              primaryTypographyProps={{
-                fontWeight: location.pathname === item.path ? 600 : 400,
-                color: location.pathname === item.path ? '#2196f3' : 'inherit',
+      {/* User Info Card */}
+      <Box sx={{ p: 2 }}>
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: 3,
+            bgcolor: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar
+              sx={{
+                width: 48,
+                height: 48,
+                background: 'linear-gradient(135deg, #6366f1 0%, #818cf8 100%)',
+                fontSize: 18,
+                fontWeight: 600,
               }}
-            />
-          </ListItem>
-        ))}
+            >
+              {user?.username?.charAt(0).toUpperCase()}
+            </Avatar>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography 
+                variant="subtitle2" 
+                sx={{ 
+                  color: 'white', 
+                  fontWeight: 600,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {user?.username}
+              </Typography>
+              <Chip
+                label="Cliente"
+                size="small"
+                sx={{
+                  mt: 0.5,
+                  height: 20,
+                  fontSize: '0.65rem',
+                  bgcolor: 'rgba(13, 148, 136, 0.2)',
+                  color: '#5eead4',
+                  fontWeight: 600,
+                }}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* Navigation */}
+      <List sx={{ px: 2, flex: 1 }}>
+        <Typography
+          variant="overline"
+          sx={{
+            px: 2,
+            py: 1,
+            display: 'block',
+            color: '#64748b',
+            fontSize: '0.65rem',
+            fontWeight: 600,
+            letterSpacing: 1,
+          }}
+        >
+          Menú Principal
+        </Typography>
+        
+        {menuItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <ListItemButton
+              key={item.path}
+              component={Link}
+              to={item.path}
+              onClick={isMobile ? handleDrawerToggle : undefined}
+              sx={{
+                mb: 0.5,
+                borderRadius: 2,
+                color: isActive ? 'white' : '#94a3b8',
+                bgcolor: isActive ? 'rgba(13, 148, 136, 0.15)' : 'transparent',
+                borderLeft: isActive ? '3px solid #0d9488' : '3px solid transparent',
+                '&:hover': {
+                  bgcolor: isActive 
+                    ? 'rgba(13, 148, 136, 0.2)' 
+                    : 'rgba(255, 255, 255, 0.05)',
+                },
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <ListItemIcon 
+                sx={{ 
+                  color: isActive ? '#14b8a6' : '#64748b',
+                  minWidth: 40,
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontWeight: isActive ? 600 : 400,
+                  fontSize: '0.9rem',
+                }}
+              />
+              {isActive && (
+                <Box
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    bgcolor: '#14b8a6',
+                  }}
+                />
+              )}
+            </ListItemButton>
+          );
+        })}
       </List>
 
-      <Divider />
+      <Divider sx={{ borderColor: 'rgba(255,255,255,0.05)' }} />
       
-      <List>
-        <ListItem
-          button
+      {/* Bottom Actions */}
+      <List sx={{ p: 2 }}>
+        <ListItemButton
           component={Link}
           to="/"
-          sx={{ mx: 1, borderRadius: 1 }}
+          sx={{
+            borderRadius: 2,
+            color: '#94a3b8',
+            '&:hover': {
+              bgcolor: 'rgba(255, 255, 255, 0.05)',
+            },
+          }}
         >
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: '#64748b', minWidth: 40 }}>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="Ir al Sitio Principal" />
-        </ListItem>
+          <ListItemText 
+            primary="Ir al Sitio Principal" 
+            primaryTypographyProps={{ fontSize: '0.9rem' }}
+          />
+        </ListItemButton>
       </List>
     </Box>
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f5f7fa' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f8fafc' }}>
       {/* AppBar */}
       <AppBar
         position="fixed"
@@ -147,50 +279,98 @@ const ClienteLayout = () => {
           ml: { md: `${drawerWidth}px` },
           bgcolor: 'white',
           color: 'text.primary',
-          boxShadow: 1,
+          boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          borderBottom: '1px solid #e2e8f0',
         }}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Portal del Cliente
-          </Typography>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ display: { md: 'none' }, color: '#64748b' }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 600,
+                color: '#1e293b',
+                display: { xs: 'none', sm: 'block' },
+              }}
+            >
+              {menuItems.find(item => item.path === location.pathname)?.text || 'Portal del Cliente'}
+            </Typography>
+          </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {user?.username}
-            </Typography>
-            <Tooltip title="Opciones de usuario">
-              <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-                <Avatar sx={{ width: 36, height: 36, bgcolor: '#2196f3' }}>
+            <Tooltip title="Configuración">
+              <IconButton sx={{ color: '#64748b' }}>
+                <Settings />
+              </IconButton>
+            </Tooltip>
+            
+            <Tooltip title="Mi cuenta">
+              <IconButton onClick={handleMenuOpen}>
+                <Avatar
+                  sx={{
+                    width: 36,
+                    height: 36,
+                    background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)',
+                    fontSize: 14,
+                    fontWeight: 600,
+                  }}
+                >
                   {user?.username?.charAt(0).toUpperCase()}
                 </Avatar>
               </IconButton>
             </Tooltip>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-            >
-              <MenuItem disabled>
-                <Typography variant="body2">
-                  {user?.username} (Cliente)
-                </Typography>
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={handleLogout}>
-                <LogoutIcon sx={{ mr: 1 }} /> Cerrar Sesión
-              </MenuItem>
-            </Menu>
           </Box>
+
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            PaperProps={{
+              sx: {
+                mt: 1,
+                minWidth: 200,
+                borderRadius: 2,
+                boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+              },
+            }}
+          >
+            <Box sx={{ px: 2, py: 1.5 }}>
+              <Typography variant="subtitle2" fontWeight={600}>
+                {user?.username}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Cliente
+              </Typography>
+            </Box>
+            <Divider />
+            <MenuItem 
+              component={Link} 
+              to="/cliente/perfil" 
+              onClick={handleMenuClose}
+              sx={{ py: 1.5 }}
+            >
+              <ListItemIcon><PersonIcon fontSize="small" /></ListItemIcon>
+              Mi Perfil
+            </MenuItem>
+            <Divider />
+            <MenuItem 
+              onClick={handleLogout}
+              sx={{ py: 1.5, color: '#ef4444' }}
+            >
+              <ListItemIcon><LogoutIcon fontSize="small" sx={{ color: '#ef4444' }} /></ListItemIcon>
+              Cerrar Sesión
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
@@ -199,6 +379,7 @@ const ClienteLayout = () => {
         component="nav"
         sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
       >
+        {/* Mobile Drawer */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -206,17 +387,29 @@ const ClienteLayout = () => {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { width: drawerWidth },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth,
+              border: 'none',
+              borderRadius: 0,
+            },
           }}
         >
           {drawer}
         </Drawer>
         
+        {/* Desktop Drawer */}
         <Drawer
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { width: drawerWidth, borderRight: 'none' },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth,
+              border: 'none',
+              borderRadius: 0,
+              boxShadow: 'none',
+            },
           }}
           open
         >
@@ -224,17 +417,19 @@ const ClienteLayout = () => {
         </Drawer>
       </Box>
 
-      {/* Main content */}
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
           width: { md: `calc(100% - ${drawerWidth}px)` },
-          mt: '64px',
+          minHeight: '100vh',
         }}
       >
-        <Outlet />
+        <Toolbar />
+        <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

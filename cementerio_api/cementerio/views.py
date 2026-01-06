@@ -1,9 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.views import APIView
 from django.contrib.auth.models import User
 
 from .models import Usuario, Parcela, Reserva, Pago, Difunto
@@ -21,6 +22,29 @@ from .permissions import IsAdminOrReadOnly
 class BaseViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter, OrderingFilter]
     permission_classes = [IsAdminOrReadOnly]
+
+
+class MeView(APIView):
+    """Endpoint para que usuarios autenticados vean/editen su propio perfil"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = AuthUserSerializer(request.user)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        serializer = AuthUserSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        serializer = AuthUserSerializer(request.user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AuthUserViewSet(viewsets.ModelViewSet):

@@ -39,62 +39,206 @@ import MisReservas from './pages/cliente/MisReservas';
 import MisPagos from './pages/cliente/MisPagos';
 import MiPerfil from './pages/cliente/MiPerfil';
 
-// Tema personalizado
+// Tema personalizado - Diseño moderno y elegante
 const theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: '#1a472a',
-      light: '#2d5a3f',
-      dark: '#0f2d1a',
+      main: '#0d9488', // Teal elegante
+      light: '#14b8a6',
+      dark: '#0f766e',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: '#6c757d',
+      main: '#6366f1', // Indigo moderno
+      light: '#818cf8',
+      dark: '#4f46e5',
+      contrastText: '#ffffff',
     },
     success: {
-      main: '#28a745',
+      main: '#10b981',
+      light: '#34d399',
+      dark: '#059669',
     },
     warning: {
-      main: '#ffc107',
+      main: '#f59e0b',
+      light: '#fbbf24',
+      dark: '#d97706',
     },
     error: {
-      main: '#dc3545',
+      main: '#ef4444',
+      light: '#f87171',
+      dark: '#dc2626',
     },
+    background: {
+      default: '#f8fafc',
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#1e293b',
+      secondary: '#64748b',
+    },
+    divider: '#e2e8f0',
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontWeight: 700,
+      fontWeight: 800,
+      letterSpacing: '-0.025em',
     },
     h2: {
       fontWeight: 700,
+      letterSpacing: '-0.025em',
     },
     h3: {
-      fontWeight: 600,
+      fontWeight: 700,
+      letterSpacing: '-0.02em',
     },
     h4: {
       fontWeight: 600,
+      letterSpacing: '-0.02em',
+    },
+    h5: {
+      fontWeight: 600,
+    },
+    h6: {
+      fontWeight: 600,
+    },
+    button: {
+      fontWeight: 600,
+      letterSpacing: '0.025em',
     },
   },
+  shape: {
+    borderRadius: 12,
+  },
+  shadows: [
+    'none',
+    '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+    '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+    '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+    '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+    '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+    '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+  ],
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
-          borderRadius: 8,
+          borderRadius: 10,
+          padding: '10px 24px',
+          fontSize: '0.95rem',
+          boxShadow: 'none',
+          transition: 'all 0.2s ease-in-out',
+          '&:hover': {
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+            transform: 'translateY(-1px)',
+          },
+        },
+        contained: {
+          '&:hover': {
+            boxShadow: '0 6px 20px rgba(13, 148, 136, 0.4)',
+          },
+        },
+        outlined: {
+          borderWidth: '2px',
+          '&:hover': {
+            borderWidth: '2px',
+          },
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 16,
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          border: '1px solid #e2e8f0',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            boxShadow: '0 10px 40px -10px rgba(0, 0, 0, 0.15)',
+            transform: 'translateY(-4px)',
+          },
         },
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 16,
+        },
+        elevation1: {
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        },
+        elevation3: {
+          boxShadow: '0 10px 40px -10px rgba(0, 0, 0, 0.15)',
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            borderRadius: 10,
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+            },
+            '&.Mui-focused': {
+              boxShadow: '0 0 0 3px rgba(13, 148, 136, 0.15)',
+            },
+          },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          fontWeight: 500,
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          fontWeight: 600,
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          margin: '4px 8px',
+          transition: 'all 0.2s ease-in-out',
         },
       },
     },
@@ -134,6 +278,7 @@ function App() {
               <Route path="reservas" element={<ReservasPage />} />
               <Route path="pagos" element={<PagosPage />} />
               <Route path="difuntos" element={<DifuntosPage />} />
+              <Route path="perfil" element={<MiPerfil />} />
             </Route>
 
             {/* Rutas protegidas de cliente */}

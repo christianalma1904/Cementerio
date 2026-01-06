@@ -61,6 +61,18 @@ export const pagoService = createCRUDService(API_ENDPOINTS.PAGOS);
 export const difuntoService = createCRUDService(API_ENDPOINTS.DIFUNTOS);
 export const authUserService = createCRUDService(API_ENDPOINTS.AUTH_USERS);
 
+// Servicio para el perfil del usuario autenticado
+export const meService = {
+  get: async () => {
+    const response = await axios.get(API_ENDPOINTS.ME);
+    return response.data;
+  },
+  update: async (data) => {
+    const response = await axios.patch(API_ENDPOINTS.ME, data);
+    return response.data;
+  },
+};
+
 const apiServices = {
   usuarios: usuarioService,
   parcelas: parcelaService,
@@ -68,6 +80,7 @@ const apiServices = {
   pagos: pagoService,
   difuntos: difuntoService,
   authUsers: authUserService,
+  me: meService,
 };
 
 export default apiServices;

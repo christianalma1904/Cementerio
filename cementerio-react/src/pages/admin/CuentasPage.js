@@ -182,39 +182,67 @@ const CuentasPage = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress sx={{ color: '#dc2626' }} />
       </Box>
     );
   }
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SecurityIcon color="primary" />
-            <Typography variant="h4" fontWeight="bold">
+    <Box className="animate-fade-in">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <SecurityIcon />
+          </Box>
+          <Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
               Cuentas del Sistema
             </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Gestión de cuentas de acceso (usuario y contraseña)
+            </Typography>
           </Box>
-          <Typography variant="body2" color="text.secondary">
-            Gestión de cuentas de acceso (usuario y contraseña)
-          </Typography>
         </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          sx={{ bgcolor: '#1a472a', '&:hover': { bgcolor: '#2d5a3f' } }}
+          sx={{ 
+            background: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)',
+            boxShadow: '0 4px 14px rgba(220, 38, 38, 0.35)',
+            '&:hover': { 
+              background: 'linear-gradient(135deg, #b91c1c 0%, #dc2626 100%)',
+            },
+          }}
         >
           Nueva Cuenta
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
-      <Alert severity="info" sx={{ mb: 2 }}>
+      <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
         <strong>Nota:</strong> Estas son las cuentas de acceso al sistema. 
         Los usuarios tipo "ADMIN" pueden acceder al panel de administración, 
         los tipo "CLIENTE" solo al portal de cliente.
@@ -236,7 +264,7 @@ const CuentasPage = () => {
         loading={saving}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               label="Nombre de Usuario"
@@ -247,7 +275,7 @@ const CuentasPage = () => {
               helperText="Este es el nombre para iniciar sesión"
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               label={selectedUser ? 'Nueva Contraseña (dejar vacío para no cambiar)' : 'Contraseña'}
@@ -259,7 +287,7 @@ const CuentasPage = () => {
               helperText={selectedUser ? 'Solo completar si desea cambiar la contraseña' : 'Contraseña para iniciar sesión'}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Nombre"
@@ -268,7 +296,7 @@ const CuentasPage = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Apellido"
@@ -277,7 +305,7 @@ const CuentasPage = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               label="Email"
@@ -287,7 +315,7 @@ const CuentasPage = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <FormControlLabel
               control={
                 <Switch
@@ -303,7 +331,7 @@ const CuentasPage = () => {
               Los administradores acceden al panel de admin
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <FormControlLabel
               control={
                 <Switch
@@ -329,6 +357,8 @@ const CuentasPage = () => {
         onConfirm={handleDelete}
         title="Eliminar Cuenta"
         message={`¿Está seguro de eliminar la cuenta "${selectedUser?.username}"? Esta acción no se puede deshacer.`}
+        severity="danger"
+        confirmText="Eliminar"
       />
 
       {/* Snackbar */}
@@ -338,7 +368,11 @@ const CuentasPage = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert 
+          severity={snackbar.severity} 
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ borderRadius: 2 }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

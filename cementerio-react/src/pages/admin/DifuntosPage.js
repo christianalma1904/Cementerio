@@ -10,7 +10,7 @@ import {
   Grid,
   CircularProgress,
 } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Add as AddIcon, Person as PersonIcon } from '@mui/icons-material';
 import DataTable from '../../components/common/DataTable';
 import FormDialog from '../../components/common/FormDialog';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
@@ -148,34 +148,65 @@ const DifuntosPage = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress sx={{ color: '#64748b' }} />
       </Box>
     );
   }
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Typography variant="h4" fontWeight="bold">
-            Difuntos
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Registro de personas fallecidas
-          </Typography>
+    <Box className="animate-fade-in">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #64748b 0%, #94a3b8 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <PersonIcon />
+          </Box>
+          <Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Difuntos
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Registro de personas fallecidas
+            </Typography>
+          </Box>
         </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          sx={{ bgcolor: '#1a472a', '&:hover': { bgcolor: '#2d5a3f' } }}
+          sx={{ 
+            background: 'linear-gradient(135deg, #64748b 0%, #94a3b8 100%)',
+            boxShadow: '0 4px 14px rgba(100, 116, 139, 0.35)',
+            '&:hover': { 
+              background: 'linear-gradient(135deg, #475569 0%, #64748b 100%)',
+            },
+          }}
         >
           Nuevo Registro
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
       <DataTable
         columns={columns}
@@ -193,7 +224,7 @@ const DifuntosPage = () => {
         loading={saving}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Nombre"
@@ -203,7 +234,7 @@ const DifuntosPage = () => {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Apellido"
@@ -213,7 +244,7 @@ const DifuntosPage = () => {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Fecha de Nacimiento"
@@ -224,7 +255,7 @@ const DifuntosPage = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Fecha de Fallecimiento"
@@ -236,7 +267,7 @@ const DifuntosPage = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               select
@@ -253,7 +284,7 @@ const DifuntosPage = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               label="Notas"
@@ -274,6 +305,8 @@ const DifuntosPage = () => {
         onConfirm={handleDelete}
         title="Eliminar Registro"
         message={`¿Está seguro de eliminar el registro de "${selectedDifunto?.nombre} ${selectedDifunto?.apellido}"?`}
+        severity="danger"
+        confirmText="Eliminar"
       />
 
       {/* Snackbar */}
@@ -283,7 +316,11 @@ const DifuntosPage = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert 
+          severity={snackbar.severity} 
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ borderRadius: 2 }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

@@ -12,6 +12,7 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Divider,
@@ -27,6 +28,7 @@ import {
   Logout as LogoutIcon,
   Dashboard as DashboardIcon,
   AccountCircle,
+  Person as PersonIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -48,9 +50,8 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logout();
     handleMenuClose();
-    navigate('/');
+    logout(true);
   };
 
   const publicLinks = [
@@ -72,8 +73,7 @@ const Navbar = () => {
         </Box>
         <List>
           {publicLinks.map((link) => (
-            <ListItem
-              button
+            <ListItemButton
               key={link.path}
               component={Link}
               to={link.path}
@@ -81,7 +81,7 @@ const Navbar = () => {
             >
               <ListItemIcon>{link.icon}</ListItemIcon>
               <ListItemText primary={link.text} />
-            </ListItem>
+            </ListItemButton>
           ))}
         </List>
         <Divider />
@@ -89,31 +89,29 @@ const Navbar = () => {
           {isAuthenticated() ? (
             <>
               {isAdmin() && (
-                <ListItem
-                  button
+                <ListItemButton
                   component={Link}
                   to="/admin"
                   onClick={() => setDrawerOpen(false)}
                 >
                   <ListItemIcon><DashboardIcon /></ListItemIcon>
                   <ListItemText primary="Panel Admin" />
-                </ListItem>
+                </ListItemButton>
               )}
-              <ListItem button onClick={handleLogout}>
+              <ListItemButton onClick={handleLogout}>
                 <ListItemIcon><LogoutIcon /></ListItemIcon>
                 <ListItemText primary="Cerrar Sesión" />
-              </ListItem>
+              </ListItemButton>
             </>
           ) : (
-            <ListItem
-              button
+            <ListItemButton
               component={Link}
               to="/login"
               onClick={() => setDrawerOpen(false)}
             >
               <ListItemIcon><LoginIcon /></ListItemIcon>
               <ListItemText primary="Iniciar Sesión" />
-            </ListItem>
+            </ListItemButton>
           )}
         </List>
       </Box>
@@ -188,15 +186,21 @@ const Navbar = () => {
                     {isAdmin() && (
                       <MenuItem
                         component={Link}
-                        to="/admin"
+                        to="/admin/perfil"
                         onClick={handleMenuClose}
                       >
-                        <DashboardIcon sx={{ mr: 1 }} /> Panel Admin
+                        <PersonIcon sx={{ mr: 1 }} /> Mi Perfil
                       </MenuItem>
                     )}
-                    <MenuItem onClick={handleLogout}>
-                      <LogoutIcon sx={{ mr: 1 }} /> Cerrar Sesión
-                    </MenuItem>
+                    {!isAdmin() && (
+                      <MenuItem
+                        component={Link}
+                        to="/cliente/perfil"
+                        onClick={handleMenuClose}
+                      >
+                        <PersonIcon sx={{ mr: 1 }} /> Mi Perfil
+                      </MenuItem>
+                    )}
                   </Menu>
                 </>
               ) : (

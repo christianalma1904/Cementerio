@@ -10,7 +10,7 @@ import {
   Grid,
   CircularProgress,
 } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
+import { Add as AddIcon, EventNote as EventIcon } from '@mui/icons-material';
 import DataTable from '../../components/common/DataTable';
 import FormDialog from '../../components/common/FormDialog';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
@@ -144,34 +144,65 @@ const ReservasPage = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress sx={{ color: '#f59e0b' }} />
       </Box>
     );
   }
 
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Typography variant="h4" fontWeight="bold">
-            Reservas
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Gestión de reservas de parcelas
-          </Typography>
+    <Box className="animate-fade-in">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <EventIcon />
+          </Box>
+          <Box>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Reservas
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Gestión de reservas de parcelas
+            </Typography>
+          </Box>
         </Box>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenCreate}
-          sx={{ bgcolor: '#1a472a', '&:hover': { bgcolor: '#2d5a3f' } }}
+          sx={{ 
+            background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+            boxShadow: '0 4px 14px rgba(245, 158, 11, 0.35)',
+            '&:hover': { 
+              background: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
+            },
+          }}
         >
           Nueva Reserva
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
       <DataTable
         columns={columns}
@@ -189,7 +220,7 @@ const ReservasPage = () => {
         loading={saving}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               select
@@ -206,7 +237,7 @@ const ReservasPage = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               select
@@ -223,7 +254,7 @@ const ReservasPage = () => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               label="Fecha de Reserva"
@@ -235,7 +266,7 @@ const ReservasPage = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               select
@@ -260,6 +291,8 @@ const ReservasPage = () => {
         onConfirm={handleDelete}
         title="Eliminar Reserva"
         message={`¿Está seguro de eliminar la reserva #${selectedReserva?.id_reserva}?`}
+        severity="danger"
+        confirmText="Eliminar"
       />
 
       {/* Snackbar */}
@@ -269,7 +302,11 @@ const ReservasPage = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert 
+          severity={snackbar.severity} 
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          sx={{ borderRadius: 2 }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       setUser(userData);
       
-      return { success: true };
+      return { success: true, user: userData };
     } catch (error) {
       console.error('Error en login:', error);
       return { 
@@ -67,12 +67,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = (shouldReload = false) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     delete axios.defaults.headers.common['Authorization'];
     setToken(null);
     setUser(null);
+    if (shouldReload) {
+      window.location.href = '/login';
+    }
   };
 
   const isAuthenticated = () => {

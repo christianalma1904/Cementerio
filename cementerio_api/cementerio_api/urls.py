@@ -10,6 +10,7 @@ from cementerio.views import (
     DifuntoViewSet,
     CustomAuthToken,
     AuthUserViewSet,
+    MeView,
 )
 
 router = DefaultRouter()
@@ -24,4 +25,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include(router.urls)),
     path("api/auth/login/", CustomAuthToken.as_view(), name="api_login"),
+    path("api/me/", MeView.as_view(), name="me"),
 ]

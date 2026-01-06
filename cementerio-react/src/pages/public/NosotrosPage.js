@@ -72,7 +72,7 @@ const NosotrosPage = () => {
 
         <Paper sx={{ p: 4, bgcolor: '#f8f9fa' }}>
           <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography variant="h5" gutterBottom>
                 Nuestra Historia
               </Typography>
@@ -89,7 +89,7 @@ const NosotrosPage = () => {
                 que ponemos en cada detalle.
               </Typography>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Box
                 sx={{
                   height: 300,
@@ -111,7 +111,7 @@ const NosotrosPage = () => {
 
       {/* Misión y Visión */}
       <Grid container spacing={4} sx={{ mb: 8 }}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card sx={{ height: '100%', bgcolor: '#1a472a', color: 'white' }}>
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h5" gutterBottom>
@@ -125,7 +125,7 @@ const NosotrosPage = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card sx={{ height: '100%', bgcolor: '#2d5a3f', color: 'white' }}>
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h5" gutterBottom>
@@ -148,7 +148,7 @@ const NosotrosPage = () => {
         </Typography>
         <Grid container spacing={3} sx={{ mt: 2 }}>
           {valores.map((valor, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
               <Card
                 sx={{
                   height: '100%',
@@ -186,7 +186,7 @@ const NosotrosPage = () => {
         </Typography>
         <Grid container spacing={4}>
           {equipo.map((miembro, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
               <Card
                 sx={{
                   textAlign: 'center',

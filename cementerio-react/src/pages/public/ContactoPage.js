@@ -94,7 +94,7 @@ const ContactoPage = () => {
       {/* Tarjetas de información */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
         {infoContacto.map((item, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
             <Card
               sx={{
                 height: '100%',
@@ -120,7 +120,7 @@ const ContactoPage = () => {
 
       <Grid container spacing={4}>
         {/* Formulario de contacto */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent sx={{ p: 4 }}>
               <Typography variant="h5" gutterBottom>
@@ -189,7 +189,7 @@ const ContactoPage = () => {
         </Grid>
 
         {/* Mapa */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card sx={{ height: '100%', minHeight: 400 }}>
             <Box
               sx={{
