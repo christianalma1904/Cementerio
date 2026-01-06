@@ -9,6 +9,7 @@ from cementerio.views import (
     PagoViewSet,
     DifuntoViewSet,
     CustomAuthToken,
+    AuthUserViewSet,
 )
 
 router = DefaultRouter()
@@ -17,6 +18,7 @@ router.register(r"parcelas", ParcelaViewSet, basename="parcela")
 router.register(r"reservas", ReservaViewSet, basename="reserva")
 router.register(r"pagos", PagoViewSet, basename="pago")
 router.register(r"difuntos", DifuntoViewSet, basename="difunto")
+router.register(r"auth-users", AuthUserViewSet, basename="auth-user")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

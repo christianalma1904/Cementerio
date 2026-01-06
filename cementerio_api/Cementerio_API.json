@@ -31,7 +31,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"tu_password\"\n}"
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"1234\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/auth/login/",
@@ -64,6 +64,177 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Auth Users (Cuentas del Sistema)",
+      "item": [
+        {
+          "name": "Listar Cuentas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth-users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth-users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Cuenta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"nuevo_usuario\",\n  \"password\": \"contraseña123\",\n  \"email\": \"usuario@email.com\",\n  \"first_name\": \"Juan\",\n  \"last_name\": \"Pérez\",\n  \"is_staff\": false,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth-users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth-users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalle Cuenta (id)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth-users/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth-users",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Cuenta (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"usuario_modificado\",\n  \"password\": \"nueva_contraseña\",\n  \"email\": \"nuevo@email.com\",\n  \"first_name\": \"Juan\",\n  \"last_name\": \"Pérez\",\n  \"is_staff\": true,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth-users/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth-users",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Parcial (PATCH) - Solo contraseña",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"nueva_contraseña_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth-users/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth-users",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Cuenta",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Token {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth-users/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth-users",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },

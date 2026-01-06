@@ -3,6 +3,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser
+from django.contrib.auth.models import User
 
 from .models import Usuario, Parcela, Reserva, Pago, Difunto
 from .serializers import (
@@ -11,6 +13,7 @@ from .serializers import (
     ReservaSerializer,
     PagoSerializer,
     DifuntoSerializer,
+    AuthUserSerializer,
 )
 from .permissions import IsAdminOrReadOnly
 
@@ -18,6 +21,15 @@ from .permissions import IsAdminOrReadOnly
 class BaseViewSet(viewsets.ModelViewSet):
     filter_backends = [SearchFilter, OrderingFilter]
     permission_classes = [IsAdminOrReadOnly]
+
+
+class AuthUserViewSet(viewsets.ModelViewSet):
+    """ViewSet para gestionar usuarios de autenticación (Django User)"""
+    queryset = User.objects.all().order_by('id')
+    serializer_class = AuthUserSerializer
+    permission_classes = [IsAdminUser]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['username', 'email', 'first_name', 'last_name']
 
 
 class UsuarioViewSet(BaseViewSet):
