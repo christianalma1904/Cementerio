@@ -195,6 +195,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://[::1]:3001",
     "http://[::1]:8000",
     "http://alcocer-billing-ui.desarrollo-software.xyz",
+    "http://alcocer-billing-ui.desarrollo-software.xyz",
     "http://192.188.51.84",
 ]
 
