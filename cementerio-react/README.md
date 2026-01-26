@@ -1,3 +1,80 @@
+# Cementerio React Frontend
+
+Este README describe requisitos, instalación, comandos, variables de entorno, credenciales de prueba y cómo conectar la aplicación React con la API.
+
+## Requisitos
+
+- Node.js v14+ (recomendado v16+)
+- npm v6+ o yarn
+- Navegador moderno (Chrome, Firefox, Edge)
+
+## Instalación
+
+1. Abrir una terminal en la carpeta `cementerio-react`.
+2. Instalar dependencias:
+
+```bash
+npm install
+# o
+yarn install
+```
+
+## Comandos útiles
+
+- `npm start` — Ejecuta la app en modo desarrollo (normalmente en http://localhost:3000).
+- `npm run build` — Crea la versión de producción en la carpeta `build`.
+- `npm test` — Ejecuta tests (si están configurados).
+- `npm run lint` — Linter (si está configurado en el proyecto).
+
+## Variables de entorno
+
+La app usa variables con prefijo `REACT_APP_`. Puedes crear un archivo `.env` en la raíz de `cementerio-react` con las siguientes variables mínimas:
+
+```env
+REACT_APP_API_URL=http://localhost:8000/api
+# Ejemplo: REACT_APP_API_URL=https://api.mi-dominio.com/api
+```
+
+Notas:
+- Reinicia el servidor de desarrollo si cambias el `.env`.
+- Asegúrate de que la API permite CORS desde el origen donde corre el frontend.
+
+## Credenciales de prueba
+
+Usa las siguientes credenciales para probar acceso y flujos en la app:
+
+- Admin:
+  - usuario: german
+  - password: 1234
+
+- Cliente:
+  - usuario: usuario
+  - password: 1234
+
+## Cómo conectarse a la API
+
+1. Verifica que la API esté corriendo (por ejemplo, desde `cementerio_api` en puerto 8000).
+2. Ajusta `REACT_APP_API_URL` en tu `.env` apuntando al endpoint base de la API. Ejemplo:
+
+```env
+REACT_APP_API_URL= https://cementerio-api.desarrollo-software.xyz```
+
+3. En el frontend, las llamadas deben usar `process.env.REACT_APP_API_URL` como base. Ejemplo (fetch):
+
+```js
+const base = process.env.REACT_APP_API_URL;
+fetch(`${base}/auth/login/`, { method: 'POST', body: JSON.stringify({ username, password }) })
+```
+
+4. Si usas token-based auth, guarda el token recibido (localStorage / cookie) y envía el header `Authorization: Bearer <token>` en las peticiones protegidas.
+
+## Problemas comunes
+
+- CORS: habilita el origen del frontend en la API.
+- Variables de entorno no aplicadas: reinicia `npm start`.
+- Error de conexión: verifica URL y que la API esté corriendo.
+
+Si quieres, puedo ajustar este README con instrucciones específicas del stack (por ejemplo, `yarn` vs `npm`, rutas de login, o ejemplos de llamadas reales). 
 # Cementerio React - Frontend
 
 ## Descripción
@@ -103,7 +180,7 @@ cp .env.example .env
 npm start
 ```
 
-La aplicación se abrirá en http://localhost:3000
+La aplicación se abrirá en https://alcocer-billing-ui.desarrollo-software.xyz/
 
 ## Configuración
 
@@ -112,7 +189,7 @@ La aplicación se abrirá en http://localhost:3000
 Crear un archivo `.env` en la raíz del proyecto:
 
 ```env
-REACT_APP_API_URL=http://localhost:8000
+REACT_APP_API_URL=https://cementerio-api.desarrollo-software.xyz
 ```
 
 ### API Backend
@@ -130,7 +207,7 @@ CORS_ALLOWED_ORIGINS = [
 
 ### Credenciales de Prueba
 
-- **Usuario**: admin
+- **Usuario**: usuario
 - **Contraseña**: 1234
 
 ### Flujo de Autenticación

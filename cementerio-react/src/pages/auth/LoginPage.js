@@ -387,7 +387,7 @@ const LoginPage = () => {
                     Administrador
                   </Typography>
                   <Typography variant="body2" fontWeight={600}>
-                    admin / 1234
+                    german / 1234
                   </Typography>
                 </Box>
               </Grid>
@@ -397,7 +397,7 @@ const LoginPage = () => {
                     Cliente
                   </Typography>
                   <Typography variant="body2" fontWeight={600}>
-                    cliente / 1234
+                    usuario / 1234
                   </Typography>
                 </Box>
               </Grid>
